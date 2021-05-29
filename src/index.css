@@ -1,13 +1,36 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@font-face {
+    font-family: 'soleilbold';
+    src: url('soleilbold-webfont.woff2') format('woff2'),
+         url('soleilbold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
+@font-face {
+    font-family: 'soleilbook';
+    src: url('soleilbook-webfont.woff2') format('woff2'),
+         url('soleilbook-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'soleillight';
+    src: url('soleillight-webfont.woff2') format('woff2'),
+         url('soleillight-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'soleilregular';
+    src: url('soleilregular-webfont.woff2') format('woff2'),
+         url('soleilregular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@tailwind utilities;
