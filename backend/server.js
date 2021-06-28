@@ -22,11 +22,18 @@ const usersRouter = require('./routes/users');
 const postRouter = require('./routes/post');
 const productRouter = require('./routes/product');
 const cartRouter = require('./routes/cart')
+const addressRouter = require('./routes/address')
+const transactionRouter = require('./routes/transaction')
+
 
 app.use('/users', usersRouter);
 app.use('/post', postRouter);
 app.use('/product', productRouter);
 app.use('/cart',cartRouter);
+app.use('/address',addressRouter);
+app.use('/transaction',transactionRouter);
+
+
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

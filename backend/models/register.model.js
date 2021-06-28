@@ -26,12 +26,18 @@ const userSchema = new Schema({
         trim: true,
         minlength: 8
     },
-    cart:[{
-        type: String,
-    }],
-    transaction:[{
-        type: String,
-    }]
+    bday:{
+        type:Number,
+        required: true
+    },
+    bmonth:{
+        type:Number,
+        required:true
+    },
+    byear:{
+        type:Number,
+        required:true
+    }
     
 },{
     timestamps: true.valueOf,

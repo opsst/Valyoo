@@ -20,12 +20,7 @@ const productSchema = new Schema({
         trim: true,
     },
     pquan: [{
-        type: Number,
-        required: true,
-        trim: true,
-    }],
-    ptquan: [{
-        type: String,
+        type: Array,
         required: true,
         trim: true,
     }],
@@ -46,8 +41,11 @@ const productSchema = new Schema({
         required:true
     },
     pimg:[{
-        type: String
+        type: Array
     }],
+    ptcolor:[{
+        type: String
+    }]
     
     //ชื่อ ราคา descrip quantity  category
 },{

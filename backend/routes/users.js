@@ -7,7 +7,7 @@ const { JWT_SECRET } = require('../keys');
 const requireLogin = require('../middleware/requireLogin')
 
 router.get('/protected',requireLogin,(req,res)=>{
-    res.json(req.user.firstname)
+    res.json(req.user)
 })
 
 router.route('/').get((req,res)=>{
@@ -17,12 +17,33 @@ router.route('/').get((req,res)=>{
 });
 
 
+router.post('/q/:id',(req,res)=>{
+    User.findByIdAndUpdate(req.params.id,{
+        firstname:req.body.firstname,
+        lastname:req.body.lastname,
+        bday:req.body.bday,
+        bmonth:req.body.bmonth,
+        byear:req.body.byear
+    })
+    .then(()=>res.json('Change'))
+    .catch(err => res.status(400).json('Error: ' + err));
+})
+
+router.delete('/d/:id',(req,res)=>{
+    User.findByIdAndDelete(req.params.id)
+    .then(()=> res.json('Deleted'))
+    .catch(err => res.status(400).json('Error: ' + err));
+})
+
 router.route('/register').post((req,res)=>{
 
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const email = req.body.email;
     const password = req.body.password;
+    const bday = req.body.bday;
+    const bmonth = req.body.bmonth;
+    const byear = req.body.byear;
 
     bcrypt.hash(password,saltRounds)
     .then(hashpass=>{
@@ -30,7 +51,10 @@ router.route('/register').post((req,res)=>{
             firstname,
             lastname,
             email,
-            password:hashpass
+            password:hashpass,
+            bday,
+            bmonth,
+            byear
         });
     
         
