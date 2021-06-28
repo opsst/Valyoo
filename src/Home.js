@@ -6,47 +6,25 @@ import playm from "./video/mbanner.webm";
 const Home = () => {
     const testf = document.querySelectorAll('.test');
     localStorage.setItem('url','/');
+    localStorage.setItem("isDes",0)
     console.log(testf);
 
 
     return ( 
         <div >
-        <div className="flex grid grid-cols-2 justify-center mt-1 mb-12">
+        <div className="grid grid-cols-2 justify-center mt-1 mb-12">
             <div className="col-span-2 relative">
-            <video className="object-cover w-full h-64 sm:h-96" autoPlay loop muted><source src={playm} type="video/webm"/></video>
-            <div className="absolute top-0 right-8 text-right">
-                    <h1 className="mt-7 font-primary2 text-3xl sm:text-4xl text-white opacity-100">RUNNER INSTINCTS</h1>
+            <video className="object-cover w-full h-screen sm:h-screen" autoPlay loop muted><source src={playm} type="video/webm"/></video>
+            <div className="absolute bottom-12 right-8 text-right">
+                    <h1 className="mt-7 font-primary2 text-3xl sm:text-6xl text-white opacity-100">RUNNER INSTINCTS</h1>
                     <br />
-                    <p className="text-white font-primary4">This new women's training shoe will be avaliable</p>
-                    <p className="text-white font-primary4">on July 13th at Valyoo</p>
-                    <br /> <br /> <br /> <br /> <br /> <br />
-                    <Link to='/all'><div className="pl-96"><p className="px-8 py-4 rounded-full cursor-pointer tracking-wide font-primary2 text-2xl bg-white">SHOP NOW</p></div></Link>
+                    <p className="text-white font-primary4 text-lg">This new women's training shoe will be avaliable</p>
+                    <p className="text-white font-primary4 text-lg">on July 13th at Valyoo</p>
+                    <br /> <br /> 
+                    <Link to='/all/all'><div className="pl-96"><p className="px-8 py-4 rounded-full cursor-pointer tracking-wide font-primary2 text-3xl bg-white">SHOP NOW</p></div></Link>
                 </div>
             </div>
-            <div className="relative">
-                <video className="object-cover w-full h-64 sm:h-96" autoPlay loop muted><source src={playv2} type="video/webm"/></video>
-                <div className="absolute bottom-8 right-8 text-right">
-                    <h1 className="mt-7 font-primary2 text-3xl sm:text-4xl text-white opacity-100">PUMA X ADRIANA</h1>
-                    <br />
-                    <p className="text-white font-primary4">This new women's training shoe will be avaliable</p>
-                    <p className="text-white font-primary4">on July 13th at Valyoo</p>
-                    <br />
-                    <div className="pl-96"><p className="px-5 py-2 rounded-full cursor-pointer tracking-wide font-primary2 bg-white">PRE-ORDER NOW</p></div>
-                </div>
 
-            </div>
-            
-            <div className="relative">
-                <video className="object-cover w-full h-64 sm:h-96" autoPlay loop muted><source src={playv} type="video/webm"/></video>
-                <div className="absolute bottom-8 right-8 text-right">
-                    <h1 className="mt-7 font-primary2 text-3xl sm:text-4xl text-white opacity-100">BUILT TO BE BOLD</h1>
-                    <br />
-                    <p className="text-white font-primary4">Which classic from the ZX 8000 "Blackpink" collection </p>
-                    <p className="text-white font-primary4">gets you in the mood to play?</p>
-                    <br />
-                    <div className="pl-96"><p className="px-5 py-2 rounded-full cursor-pointer tracking-wide font-primary2 bg-white">SHOP NOW</p></div>
-                </div>
-            </div>
             
         </div>
 
@@ -73,6 +51,7 @@ const Home = () => {
             <p className="px-4 text-center font-primary3 text-sm break-all" >Men's Charged Cotton® 6" Boxerjock® – 3-Pack</p>
             <p className="px-4 text-center font-primary2 text-sm break-all" >฿ 1,990.00</p>
         </div>
+
 
             
             
@@ -104,12 +83,39 @@ const Home = () => {
             
             
         </div>
+        <div className="grid grid-cols-2 justify-center mt-1 mb-12">
+        <div className="relative">
+                <video className="object-cover w-full h-64 sm:h-96" autoPlay loop muted><source src={playv2} type="video/webm"/></video>
+                <div className="absolute bottom-8 right-8 text-right">
+                    <h1 className="mt-7 font-primary2 text-3xl sm:text-4xl text-white opacity-100">PUMA X ADRIANA</h1>
+                    <br />
+                    <p className="text-white font-primary4">This new women's training shoe will be avaliable</p>
+                    <p className="text-white font-primary4">on July 13th at Valyoo</p>
+                    <br />
+                    <div className="pl-96"><p className="px-5 py-2 rounded-full cursor-pointer tracking-wide font-primary2 bg-white">PRE-ORDER NOW</p></div>
+                </div>
+
+            </div>
+            
+            <div className="relative">
+                <video className="object-cover w-full h-64 sm:h-96" autoPlay loop muted><source src={playv} type="video/webm"/></video>
+                <div className="absolute bottom-8 right-8 text-right">
+                    <h1 className="mt-7 font-primary2 text-3xl sm:text-4xl text-white opacity-100">BUILT TO BE BOLD</h1>
+                    <br />
+                    <p className="text-white font-primary4">Which classic from the ZX 8000 "Blackpink" collection </p>
+                    <p className="text-white font-primary4">gets you in the mood to play?</p>
+                    <br />
+                    <div className="pl-96"><p className="px-5 py-2 rounded-full cursor-pointer tracking-wide font-primary2 bg-white">SHOP NOW</p></div>
+                </div>
+            </div>
+            </div>
         <div>
         <p  className=" font-primary2 text-center text-3xl mt-8 sm:text-2xl text-gray-300 relative tracking-wider">SHOP BY BRAND</p>
         <div className="px-24 flex grid grid-cols-6 h-96 mt-8 ">
             
             <div><img className="test h-96 object-cover cursor-pointer hover:opacity-50 " src="pics\50092713xlarge.jpg" alt="" />
-            <span className="test block hover:hidden">ADIDAS</span></div>
+            {/* <span className="test block hover:hidden">ADIDAS</span> */}
+            </div>
             <img className="h-96 object-cover cursor-pointer" src="pics\54079813xlarge.jpg" alt="" />
             <img className="h-96 object-cover cursor-pointer" src="pics\newbalance_mt83530_front_lg.jpg" alt="" />
             <img className="h-96 object-cover cursor-pointer" src="pics\fila-WhiteNavy-Gregor-Stripe-T-shirt.jpeg" alt="" />

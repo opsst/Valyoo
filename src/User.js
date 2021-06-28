@@ -12,7 +12,9 @@ export default class User extends Component{
         this.onSubmit = this.onSubmit.bind(this);
         this.state = {
             email: '',
-            password: '',        
+            password: '',
+            errormsg:'',
+            iserror:false,    
         }
     }
 
@@ -29,6 +31,7 @@ export default class User extends Component{
         }
         onSubmit(e) {
             e.preventDefault();
+
             // window.axios = axios.create({
             //     baseURL: '/user',
             //     timeout: 10000,
@@ -49,7 +52,7 @@ export default class User extends Component{
             axios.post('http://localhost:5000/users/signin',user)
             .then(res => {
                 const x = 'Bearer ' + res.data.token
-                console.log(x)
+                console.log(res)
                 localStorage.setItem('token',x);
                 // window.location.reload();
                 // setTimeout(function() { localStorage.clear(); console.log('clear!'); window.location.reload(); }, (7200)); // 24 hours
@@ -63,11 +66,31 @@ export default class User extends Component{
                     window.location = '/';
                 }
 
-            });
-            this.setState({
-                email: '',
-                password: '',        
-            })
+            }).catch(error=> {
+                // this.setState({
+                //     email: '',
+                //     password: '',
+                //     errormsg:error.response.data        
+                // })
+
+                if (error.response) {
+                  console.log(error.response.data);
+                    this.setState({
+                    email: '',
+                    password: '',
+                    iserror:true
+                })
+                  console.log(error.response.status);
+                  console.log(error.response.headers);
+                  
+                } else if (error.request) {
+                  console.log(error.request);
+                } else {
+
+                  console.log('Error', error.message);
+                }
+            
+              });
             
     
         }
@@ -81,12 +104,15 @@ export default class User extends Component{
                     <form action="" onSubmit={this.onSubmit}>
                         <input className="rounded-none appearance-none border bg-gray-200 w-full px-4 py-3 mt-4 my-6 font-primary3 text-grey-500" type="text" placeholder="Email Address" value={this.state.email} onChange={this.onChangeEmail} required/>
                         <input className="rounded-none appearance-none border bg-gray-200 w-full px-4 py-3 font-primary3 text-grey-500" type="Password" placeholder="Password" value={this.state.password} onChange={this.onChangePassword} required/>
+                        
                         <button className="rounded-none shadow bg-gray-400 hover:bg-gray-700 my-10 text-white font-bold py-4 px-8 font-primary2  focus:outline-none focus:shadow-outline">LOGIN</button>
+                        
                         <label class="inline-flex items-center mt-3">
-
+                        
             </label>
                         
                     </form>
+                    {this.state.iserror&&<span className="font-primary3 text-red-500">Invalid Email or password</span>}
                     </div>
                     <div className="mx-36 my-20 p-6 bg-gray-200 max-h-80 h-full font-primary4">
                     <div className=" font-primary2 text-2xl mb-6">

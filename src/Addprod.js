@@ -1,21 +1,5 @@
 import React ,{ Component, useState } from 'react';
 import axios from 'axios';
-import { ConnectionBase } from 'mongoose';
-import { fireEvent } from '@testing-library/dom';
-import { findAllByTestId } from '@testing-library/dom';
-
-// // Import React FilePond
-// import { FilePond, registerPlugin } from "react-filepond";
-// import "filepond/dist/filepond.min.css";
-
-// // Import the Image EXIF Orientation and Image Preview plugins
-// // Note: These need to be installed separately
-// import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-// import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-// import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-
-// Register the plugins
-// registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 export default class Addprod extends Component{
     constructor(props) {
@@ -24,7 +8,6 @@ export default class Addprod extends Component{
         this.onChangeProductName = this.onChangeProductName.bind(this);
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeDescription = this.onChangeDescription.bind(this);
-        this.onChangeQuantity = this.onChangeQuantity.bind(this);
         this.onChangeTypeQuantity = this.onChangeTypeQuantity.bind(this);
         this.onChangeType = this.onChangeType.bind(this)
         this.onChangeDivision = this.onChangeDivision.bind(this);
@@ -34,6 +17,7 @@ export default class Addprod extends Component{
         this.onSubmit = this.onSubmit.bind(this);
         this.handleOption = this.handleOption.bind(this);
         this.letkillthislove = this.letkillthislove.bind(this);
+        this.setNum = this.setNum.bind(this);
 
         this.state = {
             pname: '',
@@ -44,17 +28,26 @@ export default class Addprod extends Component{
             ptype: '',
             pdivn: '',
             psex:'',              
-            pbrand: '',      
-            pimg: '',
+            pbrand: '',    
+            pimg: [[],[],[],[],[]],
+            useimg:[],
             purl:'' ,
             showOption:false,
             showOptionFoot:false,
             showOptionAppe:false,
             showOptionAsse:false,
             file:[],
+            preparefile1:[],
+            preparefile2:[],
+            preparefile3:[],
+            preparefile4:[],
+            preparefile5:[],
             fileReady:false,
             errormsg:false,
-            memptquan:[]
+            memptquan:[],
+            ptnamecol:[],
+            ptcolor: 0,
+            ptcolotcrea: []
         }
     }
     // postDetails=()=>{
@@ -89,7 +82,7 @@ export default class Addprod extends Component{
             })
         }
         else if(e.target.value==="1"){
-            let prototypeShoe = [["4US",0],["4.5US",0],["5US",0],["5.5US",0],["6US",0],["6.5US",0],["7US",0],["7.5US",0],["8US",0],["8.5US",0],["9US",0],["9.5US",0],["10US",0],["10.5US",0],["11US",0],["11.5US",0],["12US",0],["12.5US",0],["13US",0],["13.5US",0],["14US",0],["15US",0],]
+            let prototypeShoe = [["4US",-1,-1,-1,-1,-1],["4.5US",-1,-1,-1,-1,-1],["5US",-1,-1,-1,-1,-1],["5.5US",-1,-1,-1,-1,-1],["6US",-1,-1,-1,-1,-1],["6.5US",-1,-1,-1,-1,-1],["7US",-1,-1,-1,-1,-1],["7.5US",-1,-1,-1,-1,-1],["8US",-1,-1,-1,-1,-1],["8.5US",-1,-1,-1,-1,-1],["9US",-1,-1,-1,-1,-1],["9.5US",-1,-1,-1,-1,-1],["10US",-1,-1,-1,-1,-1],["10.5US",-1,-1,-1,-1,-1],["11US",-1,-1,-1,-1,-1],["11.5US",-1,-1,-1,-1,-1],["12US",-1,-1,-1,-1,-1],["12.5US",-1,-1,-1,-1,-1],["13US",-1,-1,-1,-1,-1],["13.5US",-1,-1,-1,-1,-1],["14US",-1,-1,-1,-1,-1],]
             this.setState({
                 showOptionFoot:true,
                 showOptionAppe:false,
@@ -99,7 +92,7 @@ export default class Addprod extends Component{
             })
         }
         else if(e.target.value==="2"){
-            let prototypeCloth = [["XS",0],["S",0],["M",0],["L",0],["XL",0],["2XL",0],]
+            let prototypeCloth = [["XS",-1,-1,-1,-1,-1],["S",-1,-1,-1,-1,-1],["M",-1,-1,-1,-1,-1],["L",-1,-1,-1,-1,-1],["XL",-1,-1,-1,-1,-1],["2XL",-1,-1,-1,-1,-1],]
             this.setState({
                 showOptionAppe:true,
                 showOptionFoot:false,
@@ -110,7 +103,7 @@ export default class Addprod extends Component{
             })
         }
         else if(e.target.value==="3"){
-            let prototypeAsse = [["OSFM",0],["OSFW",0]]
+            let prototypeAsse = [["OSFM",-1,-1,-1,-1,-1],["OSFW",-1,-1,-1,-1,-1]]
             this.setState({
                 showOptionAsse:true,
                 showOptionFoot:false,
@@ -141,7 +134,7 @@ export default class Addprod extends Component{
             pdesc: e.target.value
         })
     }
-    onChangeTypeQuantity(e) {
+    onChangeTypeQuantity(e,num) {
         // console.log(e.target.value)
         // console.log(e.target.placeholder)
         let k=0;
@@ -149,36 +142,30 @@ export default class Addprod extends Component{
             // console.log(this.state.memptquan[k][0])
             if(this.state.memptquan[k][0]===e.target.placeholder){
                 let ram = this.state.memptquan
-                ram[k][1] = Number(e.target.value)
+                ram[k][num] = Number(e.target.value)
                 
                 this.setState({
                     memptquan : ram
                 })
                 console.log(this.state.memptquan)
             }
+
             
+            
+        }
+            if('Color name'===e.target.placeholder){
+            num=num-1
+            let ram = this.state.ptnamecol
+            ram[num] = e.target.value 
+            console.log(ram)
+            this.setState({
+                ptnamecol:ram
+            })
+            // console.log(this.state.ptnamecol)
         }
         // this.setState({
         //     ptquan: e.target.value
         // })
-    }
-    onChangeQuantity(e) {
-        // console.log(e.target.value)
-        // console.log(e.target.placeholder)
-        let x = []
-        let y = []
-        if(this.state.pdivn==="clothing"){
-            if(e.target.placeholder==="XS"){
-                x.push(e.target.value)
-                y.push(e.target.placeholder)
-            }
-        }
-        console.log(x)
-        console.log(y)
-        // this.setState({
-        //     pquan: e.target.value
-        // })
-
     }
     onChangeType(e) {
         this.setState({
@@ -200,22 +187,97 @@ export default class Addprod extends Component{
             pbrand: e.target.value
         })
     }
-    onChangeImg(e){
-        let filearray = []
-        let j = 1
-
-
-
+    setNum(e){
         this.setState({
-            pimg: e.target.files,
-
+            ptcolor: e.target.value
         })
         setTimeout(() => {
+            let tester = 1
+            let testarray= []
+            for(tester=1;tester<=this.state.ptcolor;tester++){
+                testarray.push(tester)
+            }
+            this.setState({
+                ptcolotcrea: testarray
+            })
+            let xram = this.state.ptcolotcrea.length
+            let xram2 = xram+1
+            if(xram===1||xram===2||xram===3||xram===4){
+                let rename = this.state.ptnamecol
+                let requan = this.state.memptquan
+                let k = 0
+            for(k=0;k<this.state.memptquan.length;k++){
+                requan[k][xram2]=-1
+            }
+            let reimg = this.state.pimg
+            if(xram===1){
+                this.setState(
+                    {
+                        preparefile2:[]
+                    }
+                )
+            }
+            else if(xram===2){
+                this.setState(
+                    {
+                        preparefile3:[]
+                    }
+                )
+            }
+            else if(xram===3){
+                this.setState(
+                    {
+                        preparefile4:[]
+                    }
+                )
+            }
+            else if(xram===4){
+                this.setState(
+                    {
+                        preparefile5:[]
+                    }
+                )
+            }
+                reimg[xram]=[]
+                rename[xram]=''
+                // console.log(requan)
+                console.log(this.state.memptquan)
+
+                this.setState({
+                    ptnamecol: rename,
+                    pimg:reimg
+
+                })
+                console.log(this.state.pimg)
+            }
+        }, 1);
+        
+        
+    }
+    onChangeImg(e,num){
+        let filearray = []
+        let j = 1
+        let position = num-1
+        console.log(position)
+        let rpimg = this.state.pimg
+        let rfile = e.target.files
+        console.log(rpimg)
+        console.log(rfile)
+        let trypush = this.state.pimg.concat(e.target.files)
+        rpimg.splice(position,1,rfile)
+        console.log(rpimg)
+        this.setState({
+            pimg: rpimg,
+
+        })
+
+        setTimeout(() => {
+            console.log(this.state.pimg)
             console.log(this.state.pimg.length)
             let check = false
-            for(j=0;j<this.state.pimg.length;j++){
-
-                if(e.target.files[j].type==="image/apng"||e.target.files[j].type==="image/avif"||e.target.files[j].type==="image/gif"||e.target.files[j].type==="image/jpeg"||e.target.files[j].type==="image/png"||e.target.files[j].type==="image/svg+xml"||e.target.files[j].type==="image/webp"){
+            for(j=0;j<this.state.pimg[position].length;j++){
+                console.log(this.state.pimg[position][j])
+                if(this.state.pimg[position][j].type==="image/apng"||this.state.pimg[position][j].type==="image/avif"||this.state.pimg[position][j].type==="image/gif"||this.state.pimg[position][j].type==="image/jpeg"||this.state.pimg[position][j].type==="image/png"||this.state.pimg[position][j].type==="image/svg+xml"||this.state.pimg[position][j].type==="image/webp"){
                 }
                 else{
                     check = true
@@ -227,116 +289,242 @@ export default class Addprod extends Component{
                 this.setState({
                     fileReady: false
                 })
+                
             }
             else{
                 this.setState({
                     fileReady: true
                 })
+                if(position===0){
+                    this.setState({
+                        preparefile1: filearray
+                    })
+                }
+                if(position===1){
+                    this.setState({
+                        preparefile2: filearray
+                    })
+                }
+                if(position===2){
+                    this.setState({
+                        preparefile3: filearray
+                    })
+                }
+                if(position===3){
+                    this.setState({
+                        preparefile4: filearray
+                    })
+                }
+                if(position===4){
+                    this.setState({
+                        preparefile5: filearray
+                    })
+                }
             }
             console.log(this.state.fileReady)
             this.setState({
-                file: filearray,
                 errormsg: true
             })
-            console.log(filearray)
-            console.log(this.state.file[0])
+            // console.log(this.state.preparefile1)
+            // console.log(filearray)
         }, 1000);
     }
 
-    letkillthislove(){
-        return this.state.file.map(currentfile=>
+    letkillthislove(num){
+        if(num===1){
+        return this.state.preparefile1.map(currentfile=>
             {
                 return <img src={currentfile} className="w-24 h-24 object-cover"/>
             }
         )
     }
+        else if(num===2){
+        return this.state.preparefile2.map(currentfile=>
+            {
+                return <img src={currentfile} className="w-24 h-24 object-cover"/>
+            }
+        )
+    }
+    else if(num===3){
+        return this.state.preparefile3.map(currentfile=>
+            {
+                return <img src={currentfile} className="w-24 h-24 object-cover"/>
+            }
+        )
+    }
+    else if(num===4){
+        return this.state.preparefile4.map(currentfile=>
+            {
+                return <img src={currentfile} className="w-24 h-24 object-cover"/>
+            }
+        )
+    }
+    else if(num===5){
+        return this.state.preparefile5.map(currentfile=>
+            {
+                return <img src={currentfile} className="w-24 h-24 object-cover"/>
+            }
+        )
+    }
+    }
 
     onSubmit(e) {
         e.preventDefault();
-        console.log(this.state.pimg.length)
-        const data = new FormData()
-        let lenimg = this.state.pimg.length
-        let mem = []
-        let i = 0;
-        for(i=0;i<lenimg;i++){
-        data.append("file",this.state.pimg[i])
-        data.append("upload_preset","valyoo")
-        data.append("cloud_name","ProjectWhite")
-        fetch("https://api.cloudinary.com/v1_1/projectwhite/image/upload",{
-            method:"post",
-            body:data
-        })
-        .then(res=>res.json())
-        .then(data=>{
-            mem.push(data.url)
-            console.log(mem)
+            let data = new FormData()
 
-        })
-        .catch(err=>{
-            console.log(err)
-        })
+            let lenimg = this.state.pimg.length
+
+            let i = 0;
+            let j = 0;
+            for(j=0;j<5;j++){
+                let url = []
+                for(i=0;i<this.state.pimg[j].length;i++){
+                    console.log(this.state.pimg[j][i])
+                    data.append("file",this.state.pimg[j][i])
+                    data.append("upload_preset","valyoo")
+                    data.append("cloud_name","ProjectWhite")
+                    fetch("https://api.cloudinary.com/v1_1/projectwhite/image/upload",{
+                        method:"post",
+                        body:data
+                    })
+                    .then(res=>res.json())
+                    .then(data=>{
+                        // mem = this.state.pimg[j][i]
+                        // // mem.splice(i,1,data.url)
+                        // console.log(mem)
+                        url.push(data.url) 
+                        // console.log(url)
+                        // let mem = this.state.pimg
+                        // mem.splice((j,i),1,url)
+                        // console.log(mem)
+                        // // mem[j][i] = url
+                        // this.setState({
+                        //     pimg:mem
+                        // })
+                        // console.log(mem)
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
 
 
-        }
-        setTimeout(() => {
-            if(i===(lenimg)){
-                this.setState({
-                    pimg: mem
-                })
-                this.setsent()
-                // window.location = '/'
-            }
-        }, 5000);
-
-        // mem.push(this.state.pimg[0])
-        // mem.push(this.state.pimg[1])
-        
-        // console.log(this.state.pimg[0])
-        // console.log(this.state.pimg[1])
-        // data.append("file",this.state.pimg)
-        // data.append("upload_preset","valyoo")
-        // data.append("cloud_name","ProjectWhite")
-        // fetch("https://api.cloudinary.com/v1_1/projectwhite/image/upload",{
-        //     method:"post",
-        //     body:data
-        // })
-        // .then(res=>res.json())
-        // .then(data =>{
-        //     this.setState({
-        //         pimg: data.url
-        //     })
-            // console.log(this.state.pimg)
             
-        // })
+                    }
+                    setTimeout(() => {
+                        console.log(url)
+                        const please = this.state.pimg.slice(1)
+                        please.splice(j,0,url)
+                        this.setState({
+                            pimg: please
+                        })
+                        console.log(this.state.pimg)
+                    }, 1000);
+
+            }
+
+
+
+        setTimeout(() => {
+                this.setsent()
+                window.location = '/'
+        }, 35000);
 
 
 
         
 
     }
+    valueSet(){
+        if(this.state.showOptionFoot===true){
+    return this.state.ptcolotcrea.map( currentnum=>{
+        return  <div onChange={(e)=>this.onChangeTypeQuantity(e,currentnum)} className="border p-2 ml-3">
+        <input type="text" className="rounded-none appearance-none border w-48 px-4 py-3 mb-3 font-primary3 " placeholder="Color name" required/><br></br>
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="4US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="4.5US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="5US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="5.5US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="6US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="6.5US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="7US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="7.5US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="8US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="8.5US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="9US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="9.5US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="10US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="10.5US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="11US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="11.5US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="12US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="12.5US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="13US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="13.5US" />
+        <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="14US" />
+        <input className="rounded-none appearance-none border bg-gray-200 w-full px-4 py-3  font-primary3 text-grey-500" type="file" multiple placeholder="IMG" onChange={(e)=>this.onChangeImg(e,currentnum)} />
+        <div className="flex">
+                 {this.letkillthislove(currentnum)}
+                 </div>
+
+    </div>   
+                            })
+    }
+    else if(this.state.showOptionAppe===true){
+        return this.state.ptcolotcrea.map( currentnum=>{
+            return  <div onChange={(e)=>this.onChangeTypeQuantity(e,currentnum)} className="border p-2">
+            <input type="text" className="rounded-none appearance-none border w-48 px-4 py-3 mb-3 font-primary3 " placeholder="Color name" required/><br></br>
+            <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="XS" />
+            <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="S" />
+            <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="M" />
+            <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="L" />
+            <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="XL" />
+            <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="2XL" />
+            <input className="rounded-none appearance-none border bg-gray-200 w-full px-4 py-3  font-primary3 text-grey-500" type="file" multiple placeholder="IMG" onChange={(e)=>this.onChangeImg(e,currentnum)} />
+        <div className="flex">
+                 {this.letkillthislove(currentnum)}
+                 </div>
+        </div>
+                                })
+        
+    }
+    else if(this.state.showOptionAsse===true){
+        return this.state.ptcolotcrea.map( currentnum=>{
+            return  <div onChange={(e)=>this.onChangeTypeQuantity(e,currentnum)} className="border p-2">
+                <input type="text" className="rounded-none appearance-none border w-48 px-4 py-3 mb-3 font-primary3 " placeholder="Color name" required/><br></br>
+                <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="OSFM" />
+                <input type="number" min="0" className="rounded-none appearance-none border w-16 pl-2 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="OSFW" />
+                <input className="rounded-none appearance-none border bg-gray-200 w-full px-4 py-3  font-primary3 text-grey-500" type="file" multiple placeholder="IMG" onChange={(e)=>this.onChangeImg(e,currentnum)} />
+        <div className="flex">
+                 {this.letkillthislove(currentnum)}
+                 </div>
+        </div>
+                                })
+        
+    }
+}
+
+
     setsent(e){
-        let x = 0
-        let ramForpquan = []
-        let ramForptquan = []
-        for (x=0;x<this.state.memptquan.length;x++){
-            ramForptquan.push(this.state.memptquan[x][0])
-            ramForpquan.push(this.state.memptquan[x][1])
-        }
         this.setState({
-            pquan: ramForpquan,
-            ptquan: ramForptquan
+            pquan: this.state.memptquan,
         })
+        let slot = this.state.pimg
+        let i = 0
+        for (i=0;i<slot.length;i++){
+            if(slot[i].length===0){
+                slot.splice(i,slot.length)
+            }
+        }
         const prod = {
             pname: this.state.pname,
             pprice: this.state.pprice,
             pdesc: this.state.pdesc,
             pquan: this.state.pquan,
-            ptquan:this.state.ptquan,
             ptype: this.state.ptype,
             pdivn: this.state.pdivn,              
             pbrand: this.state.pbrand,      
-            pimg: this.state.pimg, 
-            psex: this.state.psex     
+            pimg: slot, 
+            psex: this.state.psex,
+            ptcolor: this.state.ptnamecol
         }
     
         console.log(prod);
@@ -385,11 +573,11 @@ export default class Addprod extends Component{
                             <option value="" selected disabled hidden>Brand</option>
                             <option value="adidas">Adidas</option>
                             <option value="nike">Nike</option>
-                            <option value="new balance">New Balance</option>
+                            <option value="new_balance">New Balance</option>
                             <option value="fila">Fila</option>
-                            <option value="under armour">Under Armour</option>
+                            <option value="under_armour">Under Armour</option>
                             <option value="puma">Puma</option>
-                            <option value="champion">Champion</option>
+                            {/* <option value="champion">Champion</option> */}
                 </select>
 
                         
@@ -404,7 +592,8 @@ export default class Addprod extends Component{
                             <option value="tracksuits">Tracksuits</option>
                             <option value="jackets">Jackets</option>
                             <option value="sweatshirts">Sweatshirts</option>
-                </select>}
+                </select>
+       }
                 {this.state.showOptionFoot &&                
                             <select onChange={this.onChangeType} required className="rounded-none appearance-none border w-36 px-4 py-3 mb-6 ml-4 font-primary3 " >
                             <option value="" selected disabled hidden>Product Type</option>
@@ -421,59 +610,20 @@ export default class Addprod extends Component{
                             <option value="socks leg warmers">Socks & Leg Warmers</option>
                             </select>
                             }
-                {this.state.showOptionFoot && <div onChange={this.onChangeTypeQuantity} className="">
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="4US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="4.5US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="5US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="5.5US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="6US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="6.5US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="7US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="7.5US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="8US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="8.5US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="9US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="9.5US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="10US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="10.5US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="11US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="11.5US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="12US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="12.5US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="13US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="13.5US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="14US" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-6 mr-1 font-primary3 text-xs text-center" placeholder="15US" />
-                    
-                </div>        
-                            }
-                {this.state.showOptionAppe && <div onChange={this.onChangeTypeQuantity} className="">
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="XS" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="S" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="M" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="L" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="XL" />
-                    <input type="text"className="rounded-none appearance-none border w-10 px-0 py-3 mb-6 mr-1 font-primary3 text-xs text-center" placeholder="2XL" />
-                    
-                </div>        
-                            }
-                {this.state.showOptionAsse && <div onChange={this.onChangeTypeQuantity} className="">
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="OSFM" />
-                    <input type="text" className="rounded-none appearance-none border w-10 px-0 py-3 mb-3 mr-1 font-primary3 text-xs text-center" placeholder="OSFW" />
-
-                    
-                </div>        
-                            }
+                            <div>
+                <label className="rounded-none appearance-none px-0 py-3 mb-3 font-primary3 text-xs text-center" for="typen">Color amount :</label>
+                <input id="typen" type="number" className="rounded-none appearance-none border w-18 py-3 mb-6 ml-1 text-center font-primary3 "value={this.state.ptcolor} onChange={e => this.setNum(e)} min="1" max="5" required/>
+                </div>
+                {this.state.showOptionFoot && this.valueSet()}
+                {this.state.showOptionAppe && this.valueSet()}
+                {this.state.showOptionAsse && this.valueSet()}
                  {/* <input className="rounded-none appearance-none border bg-gray-200 w-full px-4 py-3 mb-6 font-primary3 text-grey-500" type="text" placeholder="Quantity" value={this.state.pquan}
                     onChange={this.onChangeQuantity} required/>
                  <input className="rounded-none appearance-none border bg-gray-200 w-full px-4 py-3 mb-6 font-primary3 text-grey-500" type="text" placeholder="Category" value={this.state.pdivn}
                     onChange={this.onChangeDivision} required/>
                  <input className="rounded-none appearance-none border bg-gray-200 w-full px-4 py-3 mb-6 font-primary3 text-grey-500" type="text" placeholder="Brand" value={this.state.pbrand}
                     onChange={this.onChangeBrand} required/> */}
-                 <input className="rounded-none appearance-none border bg-gray-200 w-full px-4 py-3  font-primary3 text-grey-500" type="file" multiple placeholder="IMG" onChange={this.onChangeImg} />
-                 <div className="flex">
-                 {this.letkillthislove()}
-                 </div>
+
                  {!this.state.fileReady &&  this.state.errormsg &&<div className="font-primary3 text-red-500">Please upload only image/type file</div> }
                  {!this.state.fileReady&&<button className=" rounded-none shadow bg-gray-400 my-10 text-white font-bold py-4 px-8 font-primary2  focus:outline-none focus:shadow-outline" disabled>Add</button>}
                  {this.state.fileReady &&<button className=" rounded-none shadow bg-gray-800 hover:bg-gray-700 my-10 text-white font-bold py-4 px-8 font-primary2  focus:outline-none focus:shadow-outline">Add</button>}
